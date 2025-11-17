@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presupuesto v 0.4</title>
+    <title>Presupuesto v 0.5</title>
     <style>
         body {
             /* Estilo general */
@@ -41,7 +41,8 @@
             margin-bottom: 40px;
             width: 100%;
             height: 4cm;
-            background: #f2f2f2 url('banner.jpg') left/cover no-repeat; /*Logo de fondo*/
+            background: #f2f2f2 url('banner.jpg') left/cover no-repeat;
+            /*Logo de fondo*/
         }
 
         .header-info {
@@ -51,8 +52,10 @@
             font-size: 10pt;
             font-family: 'Roboto Mono', monospace;
             font-weight: 700;
-            color: #fff; /* Color de texto sobre logo*/
-            margin: auto 1cm; /* Margen vertical y horizontal */
+            color: #fff;
+            /* Color de texto sobre logo*/
+            margin: auto 1cm;
+            /* Margen vertical y horizontal */
         }
 
         .header-info div:first-child {
@@ -289,33 +292,66 @@
         ul {
             list-style: '> ';
         }
+
+        /* Added for editing visualization */
+        [contenteditable="true"] {
+            border: 1px dashed #ccc;
+            padding: 2px;
+            outline: none;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .controls button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #editButton {
+            background-color: #007bff;
+            color: white;
+        }
+
+        #addItemButton {
+            background-color: #28a745;
+            color: white;
+        }
     </style>
 </head>
 
 <body>
     <div class="invoice-container">
-        <div class="header">
+        <div class="controls">
+            <button id="editButton" onclick="toggleEdit()">📝 Editar Contenido</button>
+        </div>
+        <div class="header" id="headerContent">
             <div class="logo"></div>
             <div class="header-info">
-                <div class="date">04/11/25</div>
-                <div>Matías A. Santoro</div>
-                <div>20-40493208-0</div>
+                <div class="date" contenteditable="false">04/11/25</div>
+                <div contenteditable="false">Matías A. Santoro</div>
+                <div contenteditable="false">20-40493208-0</div>
             </div>
         </div>
 
         <div class="title-section">
-            <h1>PRESUPUESTO</h1>
-            <div class="num">— NUM. X</div>
+            <h1 contenteditable="false">PRESUPUESTO</h1>
+            <div class="num" contenteditable="false">— NUM. X</div>
         </div>
 
         <div class="summary">
             <div class="summary-block client">
                 <strong>Cliente</strong>
-                <span>Marcelo Gómez</span>
+                <span contenteditable="false">Marcelo Gómez</span>
             </div>
             <div class="summary-block project">
                 <strong>Proyecto</strong>
-                <span>Vectorización de imágenes</span>
+                <span contenteditable="false">Vectorización de imágenes</span>
             </div>
         </div>
 
@@ -327,81 +363,34 @@
 
             <div class="item-group">
                 <div class="item-row main">
-                    <div class="detail">Vectorización + Entrega de Originales</div>
+                    <div class="detail" contenteditable="false">Vectorización + Entrega de Originales</div>
                     <div class="cost"></div>
                 </div>
-                <ul>
+                <ul id="items-ul">
                     <li>
                         <div class="item-row sub">
-                            <div class="detail">Vectorización x1 ("Death from above")</div>
-                            <div class="cost">$ 11.000</div>
+                            <div class="detail" contenteditable="false">Vectorización x1 ("Death from above")</div>
+                            <div class="cost" contenteditable="false" onblur="updateTotals()">$ 11,000</div>
                         </div>
                     </li>
                     <li>
                         <div class="item-row sub">
-                            <div class="detail">Vectorización x3 (Emblemas Troopers)</div>
-                            <div class="cost">$ 25.000</div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item-row sub">
-                            <div class="detail">Vectorización x1 ("Death from above")</div>
-                            <div class="cost">$ 11.000</div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item-row sub">
-                            <div class="detail">Vectorización x3 (Emblemas Troopers)</div>
-                            <div class="cost">$ 25.000</div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item-row sub">
-                            <div class="detail">Vectorización x1 ("Death from above")</div>
-                            <div class="cost">$ 11.000</div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item-row sub">
-                            <div class="detail">Vectorización x3 (Emblemas Troopers)</div>
-                            <div class="cost">$ 25.000</div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item-row sub">
-                            <div class="detail">Vectorización x1 ("Death from above")</div>
-                            <div class="cost">$ 11.000</div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item-row sub">
-                            <div class="detail">Vectorización x3 (Emblemas Troopers)</div>
-                            <div class="cost">$ 25.000</div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item-row sub">
-                            <div class="detail">Vectorización x1 ("Death from above")</div>
-                            <div class="cost">$ 11.000</div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item-row sub">
-                            <div class="detail">Vectorización x3 (Emblemas Troopers)</div>
-                            <div class="cost">$ 25.000</div>
+                            <div class="detail" contenteditable="false">Vectorización x3 (Emblemas Troopers)</div>
+                            <div class="cost" contenteditable="false" onblur="updateTotals()">$ 25,000</div>
                         </div>
                     </li>
                 </ul>
-
             </div>
-
         </div>
 
+        <div class="controls" style="margin-top: 20px;">
+            <button id="addItemButton" onclick="addNewItem()" style="display:none;">➕ Agregar Item</button>
+        </div>
         <div class="footer-details">
 
             <div class="conditions-block">
                 <strong>Condiciones</strong>
-                <ol>
+                <ol contenteditable="false" id="conditions-list">
                     <li>Los archivos finales y/o originales no serán entregados hasta que el pago total sea abonado y
                         confirmado mediante un comprobante.</li>
                     <li>No se permitirá la reducción del tiempo del proyecto ni la entrega anticipada. Se respetará el
@@ -416,24 +405,26 @@
                 <div class="total-box">
                     <div class="total-row">
                         <span class="label">TOTAL: </span>
-                        <span class="amount">$36.000<span class="ars">ARS</span></span>
+                        <span class="amount" id="totalAmount">$0<span class="ars">ARS</span></span>
                     </div>
                     <div class="delivery-time">
-                        <div>Plazo estimado de entrega: <strong>1 Semana</strong></div>
-                        <div>Seña del 50%: <strong class="amount">$18.000</strong><span class="ars2">ARS</span></div>
+                        <div>Plazo estimado de entrega: <strong contenteditable="false" id="deliveryTime">1
+                                Semana</strong></div>
+                        <div>Seña del 50%: <strong class="amount" id="depositAmount">$0</strong><span
+                                class="ars2">ARS</span></div>
                     </div>
                 </div>
 
                 <div class="payment-methods">
                     <strong>Métodos de Pago:</strong>
-                    <div><b>Alias:</b> matias.santoro.mp</div>
-                    <div><b>CBU:</b> 0140036603710355419484</div>
-                    <div><i>(Transferencia Bancaria)</i></div>
+                    <div contenteditable="false"><b>Alias:</b> matias.santoro.mp</div>
+                    <div contenteditable="false"><b>CBU:</b> 0140036603710355419484</div>
+                    <div contenteditable="false"><i>(Transferencia Bancaria)</i></div>
                 </div>
             </div>
         </div>
 
-        <div class="contact-footer">
+        <div class="contact-footer" contenteditable="false">
             <a href="https://instagram.com/msantoro.dsg" target="_blank"> @msantoro.dsg</a>
             <span>|</span>
             <a href="mailto:msantoro.dsg@gmail.com"> msantoro.dsg@gmail.com</a>
@@ -443,6 +434,102 @@
 
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            updateTotals(); // Initial calculation on load
+        });
+
+        // Elements to make editable
+        const editableElements = document.querySelectorAll(
+            '.header-info div, .summary span, .item-row .detail, .item-row .cost, #conditions-list, #deliveryTime, .payment-methods div:not(:first-child), .contact-footer'
+        );
+
+        const editButton = document.getElementById('editButton');
+        const addItemButton = document.getElementById('addItemButton');
+        let isEditing = false;
+
+        /**
+         * Toggles contentEditable attribute for all marked elements.
+         */
+        function toggleEdit() {
+            isEditing = !isEditing;
+
+            editableElements.forEach(el => {
+                // The item-row .detail and .cost cells are handled separately when adding a new item
+                if (el.classList.contains('detail') || el.classList.contains('cost')) {
+                    // Only sub-item details and costs should be toggled
+                    if (el.closest('.item-row').classList.contains('sub')) {
+                        el.contentEditable = isEditing;
+                    }
+                } else {
+                    el.contentEditable = isEditing;
+                }
+            });
+
+            // Toggle button text and style
+            if (isEditing) {
+                editButton.textContent = '💾 Guardar Cambios';
+                editButton.style.backgroundColor = '#dc3545'; // Red for "Save"
+                addItemButton.style.display = 'inline-block'; // Show "Add Item" button
+            } else {
+                editButton.textContent = '📝 Editar Contenido';
+                editButton.style.backgroundColor = '#007bff'; // Blue for "Edit"
+                addItemButton.style.display = 'none'; // Hide "Add Item" button
+                updateTotals(); // Recalculate totals after saving
+            }
+        }
+
+        /**
+         * Adds a new list item to the budget items list.
+         */
+        function addNewItem() {
+            const ul = document.getElementById('items-ul');
+            const newLi = document.createElement('li');
+            newLi.innerHTML = `
+                <div class="item-row sub">
+                    <div class="detail" contenteditable="true">Nuevo Item (Descripción)</div>
+                    <div class="cost" contenteditable="true" onblur="updateTotals()">$ 0</div>
+                </div>
+            `;
+            ul.appendChild(newLi);
+            // Focus on the new detail field for immediate editing
+            newLi.querySelector('.detail').focus();
+        }
+
+        /**
+         * Calculates the total cost and the 50% deposit amount.
+         */
+        function updateTotals() {
+            const costElements = document.querySelectorAll('.item-row.sub .cost');
+            let total = 0;
+
+            costElements.forEach(costEl => {
+                // Extract number, remove non-digit/non-decimal characters (like $, space, comma)
+                const text = costEl.textContent.replace(/[^\d.]/g, '');
+                // Replace comma with dot for proper float parsing if necessary
+                const value = parseFloat(text.replace(',', '.'));
+
+                if (!isNaN(value)) {
+                    total += value;
+                }
+                // Ensure the cost field is formatted correctly after blur (optional, but helps)
+                if (isEditing) {
+                    costEl.textContent = `$ ${value.toLocaleString('es-AR', { minimumFractionDigits: 0 })}`;
+                }
+            });
+
+            // Calculate deposit
+            const deposit = total * 0.50;
+
+            // Format numbers with thousands separator (e.g., in Spanish 'es-AR')
+            const totalFormatted = total.toLocaleString('es-AR', { minimumFractionDigits: 0 });
+            const depositFormatted = deposit.toLocaleString('es-AR', { minimumFractionDigits: 0 });
+
+            // Update DOM
+            document.getElementById('totalAmount').innerHTML = `$${totalFormatted}<span class="ars">ARS</span>`;
+            document.getElementById('depositAmount').textContent = `$${depositFormatted}`;
+        }
+    </script>
 </body>
 
 </html>
