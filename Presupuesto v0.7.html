@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presupuesto v 0.6</title>
+    <title>Presupuesto v 0.7</title>
     <style>
         body {
             /* Estilo general */
@@ -61,6 +61,36 @@
         .header-info div:first-child {
             font-size: 12pt;
             margin-bottom: 5px;
+        }
+
+        /* NEW STYLES FOR DATE INPUT */
+        .date-input {
+            border: none;
+            background: none;
+            text-align: right;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: 700;
+            color: #fff;
+            /* Color de texto sobre logo*/
+            font-size: 12pt;
+            outline: none;
+            cursor: default;
+            /* Hide the default date picker icon until focus */
+            /* This is a tricky property across browsers, but helps for a cleaner look */
+            /* The input is set to be readonly when not in edit mode via JS */
+            padding: 0;
+            margin: -0.6cm;
+            line-height: 1.3;
+            height: 1.3em;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .date-input:focus {
+            /* Show a light border when focused and editable */
+            border: 1px dashed #ccc;
+            padding: 1px;
+            background-color: rgba(255, 255, 255, 0.2);
         }
 
         /* TITLE SECTION */
@@ -121,7 +151,7 @@
         }
 
         .items-header .detail-col {
-            width: 70%;
+            width: 60%;
         }
 
         .items-header .cost-col {
@@ -153,11 +183,11 @@
         }
 
         .item-row .detail {
-            width: 70%;
+            width: 50%;
         }
 
         .item-row .cost {
-            width: 30%;
+            width: 20%;
             text-align: right;
         }
 
@@ -329,11 +359,6 @@
             color: white;
         }
 
-        #removeItemButton {
-            background-color: #dc3545;
-            color: white;
-        }
-
         .delete-item-btn {
             background: none;
             border: none;
@@ -342,7 +367,6 @@
             cursor: pointer;
             padding: 0 5px;
             line-height: 1;
-            /* Align with text */
             margin-left: 10px;
             visibility: hidden;
             /* Hide by default */
@@ -356,7 +380,6 @@
 
         .item-row.sub .cost {
             width: auto;
-            min-width: 100px;
         }
     </style>
 </head>
@@ -369,15 +392,15 @@
         <div class="header" id="headerContent">
             <div class="logo"></div>
             <div class="header-info">
-                <div class="date" contenteditable="false">04/11/25</div>
-                <div contenteditable="false">Matías A. Santoro</div>
-                <div contenteditable="false">20-40493208-0</div>
+                <input type="date" id="invoiceDate" class="date-input">
+                <div id="companyName">Matías A. Santoro</div>
+                <div id="companyCuit">20-40493208-0</div>
             </div>
         </div>
 
         <div class="title-section">
             <h1 contenteditable="false">PRESUPUESTO</h1>
-            <span class="num" contenteditable="false">— NUM. X</div>
+            <div class="num" id="invoiceNumber">— NUM. X</div>
         </div>
 
         <div class="summary">
@@ -407,7 +430,7 @@
                         <div class="item-row sub">
                             <div class="detail" contenteditable="false">Vectorización x1 ("Death from above")</div>
                             <div class="cost-wrapper">
-                                <div class="cost" contenteditable="false" onblur="updateTotals()">$ 11.000</div>
+                                <div class="cost" contenteditable="false" onblur="updateTotals()">$11.000</div>
                                 <button class="delete-item-btn" onclick="removeItem(this)">❌</button>
                             </div>
                         </div>
@@ -416,7 +439,7 @@
                         <div class="item-row sub">
                             <div class="detail" contenteditable="false">Vectorización x3 (Emblemas Troopers)</div>
                             <div class="cost-wrapper">
-                                <div class="cost" contenteditable="false" onblur="updateTotals()">$ 25.000</div>
+                                <div class="cost" contenteditable="false" onblur="updateTotals()">$25.000</div>
                                 <button class="delete-item-btn" onclick="removeItem(this)">❌</button>
                             </div>
                         </div>
@@ -427,7 +450,6 @@
 
         <div class="controls" style="margin-top: -20px;">
             <button id="addItemButton" onclick="addNewItem()" style="display:none;">➕ Agregar Item</button>
-            <button id="removeItemButton" onclick="removeLastItem()" style="display:none;">➖ Eliminar Último Item</button>
         </div>
         <div class="footer-details">
 
@@ -476,7 +498,8 @@
         </div>
 
     </div>
-<script>
+
+    <script>
         // Set the default date (e.g., today's date) when the page loads
         document.addEventListener('DOMContentLoaded', () => {
             const dateInput = document.getElementById('invoiceDate');
@@ -491,8 +514,9 @@
         });
 
         // Elements to make editable (updated to use new IDs and exclude the date input)
+        /* '#invoiceNumber, #companyName, #companyCuit, .summary span, .item-row .detail, .item-row .cost, #conditions-list, #deliveryTime, .payment-methods div:not(:first-child), .contact-footer' */
         const editableElements = document.querySelectorAll(
-            '#invoiceNumber, #companyName, #companyCuit, .summary span, .item-row .detail, .item-row .cost, #conditions-list, #deliveryTime, .payment-methods div:not(:first-child), .contact-footer'
+            '#invoiceNumber, .summary span, .item-row .detail, .item-row .cost, #deliveryTime'
         );
 
         const editButton = document.getElementById('editButton');
@@ -548,25 +572,27 @@
         }
 
         /**
-         * Adds a new list item to the budget items list.
+         * Agrega un nuevo elemento de lista al presupuesto.
          */
         function addNewItem() {
             const newLi = document.createElement('li');
             newLi.innerHTML = `
                 <div class="item-row sub">
-                    <div class="detail" contenteditable="true">Nuevo Item (Descripción)</div>
+                    <div class="detail" contenteditable="true" onblur="finishEditing(this)">Nuevo Item (Descripción)</div>
                     <div class="cost-wrapper">
-                        <div class="cost" contenteditable="true" onblur="updateTotals()">$ 0</div>
+                        <div class="cost" contenteditable="true" onblur="finishEditing(this)">$ 0</div>
                         <button class="delete-item-btn" onclick="removeItem(this)">❌</button>
                     </div>
                 </div>
             `;
-            // Ensure delete button is visible on creation
-            newLi.querySelector('.delete-item-btn').style.visibility = 'visible';
+            // Asegúrate de que los nuevos ítems sean editables si ya estás en modo de edición
+            if (isEditing) {
+                newLi.querySelectorAll('.delete-item-btn').forEach(btn => btn.style.visibility = 'visible');
+            }
             ul.appendChild(newLi);
-            // Focus on the new detail field for immediate editing
+            // Enfoca en el nuevo detalle para edición inmediata
             newLi.querySelector('.detail').focus();
-            updateTotals(); // Update totals in case of $0 item
+            updateTotals(); // Actualiza totales
         }
 
         /**
@@ -583,18 +609,23 @@
         }
 
         /**
-         * Removes the last list item from the budget items list.
-         */
-        function removeLastItem() {
-            const lastItem = ul.lastElementChild;
-            if (lastItem) {
-                ul.removeChild(lastItem);
-                updateTotals(); // Recalculate totals after removal
+        * Termina la edición de un elemento, eliminando el atributo contenteditable.
+        * @param {HTMLElement} element - El elemento que se acaba de editar (detail o cost).
+        */
+        function finishEditing(element) {
+            // Verifica si el modo de edición no está activo
+            // Si el modo de edición está activo, no quitamos el borde punteado para permitir la edición continua
+            if (!isEditing) {
+                element.removeAttribute('contenteditable');
+            }
+            // Si el elemento es un costo, llama a updateTotals
+            if (element.classList.contains('cost')) {
+                updateTotals();
             }
         }
 
         /**
-         * Calculates the total cost and the 50% deposit amount.
+         * Calcula el costo total y el monto del depósito del 50%.
          */
         function updateTotals() {
             const costElements = document.querySelectorAll('.item-row.sub .cost');
