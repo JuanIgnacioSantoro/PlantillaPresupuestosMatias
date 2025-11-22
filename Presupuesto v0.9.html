@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presupuesto v 0.8</title>
+    <title>Presupuesto v 0.9</title>
     <style>
         body {
             /* Estilo general */
@@ -20,7 +20,7 @@
         .invoice-container {
             width: 21cm;
             /* Ancho A4 */
-            min-height: 27.9cm;
+            height: 29.7cm;
             /* Alto A4 */
             background-color: #ffffff;
             /* Fondo de la hoja */
@@ -400,7 +400,7 @@
 
         <div class="title-section">
             <h1 contenteditable="false">PRESUPUESTO</h1>
-            <div class="num" id="invoiceNumber">— NUM. X</div>
+            <div class="num">— NUM. <span id="invoiceNumber">X</span></div>
         </div>
 
         <div class="summary">
@@ -553,7 +553,7 @@
                 editButton.textContent = '💾 Guardar Cambios';
                 editButton.style.backgroundColor = '#dc3545'; // Red for "Save"
                 addItemButton.style.display = 'inline-block'; // Show "Add Item" button
-                removeItemButton.style.display = 'inline-block'; // Show "Remove Last Item" button
+
             } else {
                 invoiceDateInput.setAttribute('readonly', true);
                 invoiceDateInput.style.pointerEvents = 'none'; // Prevents opening picker
@@ -561,7 +561,7 @@
                 editButton.textContent = '📝 Editar Contenido';
                 editButton.style.backgroundColor = '#007bff'; // Blue for "Edit"
                 addItemButton.style.display = 'none'; // Hide "Add Item" button
-                removeItemButton.style.display = 'none'; // Hide "Remove Last Item" button
+
                 updateTotals(); // Recalculate totals after saving
             }
 
@@ -569,6 +569,16 @@
             document.querySelectorAll('.delete-item-btn').forEach(btn => {
                 btn.style.visibility = isEditing ? 'visible' : 'hidden';
             });
+
+            // Selecciona todos los elementos que tengan el atributo contenteditable
+            let elements = document.querySelectorAll('[contenteditable]');
+
+            // Itera sobre cada elemento seleccionado
+            elements.forEach(function (element) {
+                // Establece el valor del atributo contenteditable a 'false'
+                element.setAttribute('contenteditable', isEditing ? 'true' : 'false');
+            });
+
         }
 
         /**
@@ -578,7 +588,7 @@
             const newLi = document.createElement('li');
             newLi.innerHTML = `
                 <div class="item-row sub">
-                    <div class="detail" contenteditable="true" onblur="finishEditing(this)">Nuevo Item (Descripción)</div>
+                    <div class="detail" contenteditable="true" onclick="finishEditing(this)">Nuevo Item (Descripción)</div>
                     <div class="cost-wrapper">
                         <div class="cost" contenteditable="true" onblur="finishEditing(this)">$ 0</div>
                         <button class="delete-item-btn" onclick="removeItem(this)">❌</button>
@@ -616,7 +626,7 @@
             // Verifica si el modo de edición no está activo
             // Si el modo de edición está activo, no quitamos el borde punteado para permitir la edición continua
             if (!isEditing) {
-                element.removeAttribute('contenteditable');
+                element.setAttribute('contenteditable', 'false');
             }
             // Si el elemento es un costo, llama a updateTotals
             if (element.classList.contains('cost')) {
