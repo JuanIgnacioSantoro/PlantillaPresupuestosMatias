@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Presupuesto v 0.9</title>
+    <title>Presupuesto v0.10</title>
     <style>
+        @media print {
+            .ocultar-al-imprimir img {
+                display: none;
+            }
+        }
+
         body {
             /* Estilo general */
             font-family: 'Arial', sans-serif;
@@ -18,19 +23,23 @@
         }
 
         .invoice-container {
-            width: 21cm;
+            max-width: 21cm;
+            /* width: 21cm; */
             /* Ancho A4 */
-            height: 29.7cm;
+            max-height: 29.7cm;
+            /* height: 29.7cm; */
             /* Alto A4 */
-            background-color: #ffffff;
+            background-color: #fff;
             /* Fondo de la hoja */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             color: #000;
             /* Color del Texto */
-            padding: 40px 60px;
+            padding: 1cm 1cm;
             box-sizing: border-box;
             line-height: 1.5;
             font-size: 10pt;
+            display: flex;
+            flex-direction: column;
         }
 
         /* HEADER */
@@ -88,9 +97,9 @@
 
         .date-input:focus {
             /* Show a light border when focused and editable */
-            border: 1px dashed #ccc;
+            border: 1px dashed #f00;
             padding: 1px;
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 0, 0, 0.2);
         }
 
         /* TITLE SECTION */
@@ -192,7 +201,7 @@
         }
 
         /* CONDITIONS, TOTAL, PAYMENT */
-        .footer-details {
+        .footer {
             display: flex;
             justify-content: space-between;
             margin-top: 40px;
@@ -293,6 +302,7 @@
         .payment-methods {
             font-size: 9pt;
             line-height: 1.6;
+            text-align: center;
 
         }
 
@@ -304,21 +314,20 @@
         }
 
         /* FOOTER CONTACT */
-        .contact-footer {
+        .contact {
             margin-top: 60px;
             padding-top: 20px;
-            border-top: 1px solid #ccc;
+            border-top: 1px solid #1a1a1a;
             text-align: center;
-            font-size: 11pt;
-            color: #555;
+            font-size: 12pt;
             display: flex;
             justify-content: center;
             gap: 40px;
             border-collapse: collapse;
         }
 
-        .contact-footer a {
-            color: #555;
+        .contact a {
+            color: #000;
             text-decoration: none;
         }
 
@@ -336,7 +345,8 @@
         }
 
         .controls {
-            margin-bottom: 20px;
+            margin-top: 5px;
+            margin-right: 0px;
             text-align: center;
         }
 
@@ -346,7 +356,7 @@
             border: none;
             cursor: pointer;
             font-weight: bold;
-            border-radius: 4px;
+            border-radius: 5px;
         }
 
         #editButton {
@@ -356,6 +366,11 @@
 
         #addItemButton {
             background-color: #28a745;
+            color: white;
+        }
+
+        #printButton {
+            background-color: #696969;
             color: white;
         }
 
@@ -379,27 +394,51 @@
         }
 
         .item-row.sub .cost {
-            width: auto;
+            width: 50px;
+        }
+
+        #items-ul li:nth-child(odd) {
+            background-color: #eee;
+            border-radius: 5px;
+            padding: 0px 10px;
+        }
+
+        #items-ul li:nth-child(even) {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 0px 10px;
+        }
+
+        .item-row sub {
+            display: block;
+        }
+
+        img {
+            height: 20pt;
+            display: initial; /* None para no mostrar*/
         }
     </style>
 </head>
 
 <body>
     <div class="invoice-container">
-        <div class="controls">
-            <button id="editButton" onclick="toggleEdit()">📝 Editar Contenido</button>
-        </div>
         <div class="header" id="headerContent">
             <div class="logo"></div>
             <div class="header-info">
                 <input type="date" id="invoiceDate" class="date-input">
                 <div id="companyName">Matías A. Santoro</div>
                 <div id="companyCuit">20-40493208-0</div>
+                <div class="controls">
+                    <button id="editButton" class="ocultar-al-imprimir" onclick="toggleEdit()">📝 Editar
+                        Contenido</button>
+                    <button id="printButton" class="ocultar-al-imprimir" onclick="print()">🖨 Imprimir
+                        Contenido</button>
+                </div>
             </div>
         </div>
 
         <div class="title-section">
-            <h1 contenteditable="false">PRESUPUESTO</h1>
+            <h1>PRESUPUESTO</h1>
             <div class="num">— NUM. <span id="invoiceNumber">X</span></div>
         </div>
 
@@ -425,23 +464,19 @@
                     <div class="detail" contenteditable="false">Vectorización + Entrega de Originales</div>
                     <div class="cost"></div>
                 </div>
-                <ul id="items-ul">
+                <ul id="items-ul" class="estilo-tiras">
                     <li>
                         <div class="item-row sub">
                             <div class="detail" contenteditable="false">Vectorización x1 ("Death from above")</div>
-                            <div class="cost-wrapper">
-                                <div class="cost" contenteditable="false" onblur="updateTotals()">$11.000</div>
-                                <button class="delete-item-btn" onclick="removeItem(this)">❌</button>
-                            </div>
+                            <button class="delete-item-btn" onclick="removeItem(this)">❌</button>
+                            <div class="cost" contenteditable="false" onblur="updateTotals()">$11.000</div>
                         </div>
                     </li>
                     <li>
                         <div class="item-row sub">
                             <div class="detail" contenteditable="false">Vectorización x3 (Emblemas Troopers)</div>
-                            <div class="cost-wrapper">
-                                <div class="cost" contenteditable="false" onblur="updateTotals()">$25.000</div>
-                                <button class="delete-item-btn" onclick="removeItem(this)">❌</button>
-                            </div>
+                            <button class="delete-item-btn" onclick="removeItem(this)">❌</button>
+                            <div class="cost" contenteditable="false" onblur="updateTotals()">$25.000</div>
                         </div>
                     </li>
                 </ul>
@@ -451,11 +486,11 @@
         <div class="controls" style="margin-top: -20px;">
             <button id="addItemButton" onclick="addNewItem()" style="display:none;">➕ Agregar Item</button>
         </div>
-        <div class="footer-details">
+        <div class="footer">
 
             <div class="conditions-block">
                 <strong>Condiciones</strong>
-                <ol contenteditable="false" id="conditions-list">
+                <ol id="conditions-list">
                     <li>Los archivos finales y/o originales no serán entregados hasta que el pago total sea abonado y
                         confirmado mediante un comprobante.</li>
                     <li>No se permitirá la reducción del tiempo del proyecto ni la entrega anticipada. Se respetará el
@@ -482,19 +517,19 @@
 
                 <div class="payment-methods">
                     <strong>Métodos de Pago:</strong>
-                    <div contenteditable="false"><b>Alias:</b> matias.santoro.mp</div>
-                    <div contenteditable="false"><b>CBU:</b> 0140036603710355419484</div>
-                    <div contenteditable="false"><i>(Transferencia Bancaria)</i></div>
+                    <div><b>Alias:</b> matias.santoro.mp</div>
+                    <div><b>CBU:</b> 0140036603710355419484</div>
+                    <div><i>(Transferencia Bancaria)</i></div>
                 </div>
             </div>
         </div>
 
-        <div class="contact-footer" contenteditable="false">
-            <a href="https://instagram.com/msantoro.dsg" target="_blank"> @msantoro.dsg</a>
+        <div class="contact">      
+            <a href="https://instagram.com/msantoro.dsg" target="_blank"><img src="https://static.cdninstagram.com/rsrc.php/v4/yI/r/VsNE-OHk_8a.png" alt=""> @msantoro.dsg</a>
             <span>|</span>
-            <a href="mailto:msantoro.dsg@gmail.com"> msantoro.dsg@gmail.com</a>
+            <a href="mailto:msantoro.dsg@gmail.com"><img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_default_1x_r5.png" alt=""> msantoro.dsg@gmail.com</a>
             <span>|</span>
-            <a href="tel:+543487366401"> +54 (3487) 366401</a>
+            <a href="tel:+543487366401"><img src="https://static.whatsapp.net/rsrc.php/v4/yP/r/rYZqPCBaG70.png" alt=""> +54(3487)366401</a>
         </div>
 
     </div>
@@ -514,7 +549,7 @@
         });
 
         // Elements to make editable (updated to use new IDs and exclude the date input)
-        /* '#invoiceNumber, #companyName, #companyCuit, .summary span, .item-row .detail, .item-row .cost, #conditions-list, #deliveryTime, .payment-methods div:not(:first-child), .contact-footer' */
+        /* '#invoiceNumber, #companyName, #companyCuit, .summary span, .item-row .detail, .item-row .cost, #conditions-list, #deliveryTime, .payment-methods div:not(:first-child), .contact' */
         const editableElements = document.querySelectorAll(
             '#invoiceNumber, .summary span, .item-row .detail, .item-row .cost, #deliveryTime'
         );
@@ -589,10 +624,8 @@
             newLi.innerHTML = `
                 <div class="item-row sub">
                     <div class="detail" contenteditable="true" onclick="finishEditing(this)">Nuevo Item (Descripción)</div>
-                    <div class="cost-wrapper">
-                        <div class="cost" contenteditable="true" onblur="finishEditing(this)">$ 0</div>
-                        <button class="delete-item-btn" onclick="removeItem(this)">❌</button>
-                    </div>
+                    <button class="delete-item-btn" onclick="removeItem(this)">❌</button>
+                    <div class="cost" contenteditable="true" onblur="finishEditing(this)">$ 0</div>
                 </div>
             `;
             // Asegúrate de que los nuevos ítems sean editables si ya estás en modo de edición
