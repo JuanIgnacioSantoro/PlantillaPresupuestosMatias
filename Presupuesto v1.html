@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Presupuesto v0.12</title>
+    <title>Presupuesto v1</title>
     <style>
         @media print {
             .ocultar-al-imprimir-botones {
                 display: none;
             }
-            .ocultar-al-imprimir-icono {
-                display: none;
-            }
+        }
+
+        .Icono {
+            height: 7pt;
+            display: initial;
+            /* None para no mostrar*/
         }
 
         body {
@@ -26,23 +30,29 @@
         }
 
         .invoice-container {
-            max-width: 21cm;
+            /*background-image: url(./Base.jpg);*/
+            background-color: #fff;
+            background-size: contain;
+            /* Fondo de la hoja */
+            width: 21cm;
             /* width: 21cm; */
             /* Ancho A4 */
-            max-height: 29,7cm;
+            height: 29.7cm;
             /* height: 29.7cm; */
             /* Alto A4 */
-            background-color: #fff;
-            /* Fondo de la hoja */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             color: #000;
             /* Color del Texto */
-            padding: 1cm 1cm;
+            padding: 0cm 0cm;
             box-sizing: border-box;
             line-height: 1.5;
             font-size: 10pt;
             display: flex;
             flex-direction: column;
+        }
+
+        .Contenido {
+            margin: 0 1.3cm;
         }
 
         /* HEADER */
@@ -52,9 +62,10 @@
             justify-content: space-between;
             margin-bottom: 40px;
             width: 100%;
-            height: 4cm;
-            background: #f2f2f2 url('banner.jpg') left/cover no-repeat;
+            height: 4.2cm;
+            background: url('banner.jpg') left/cover no-repeat;
             /*Logo de fondo*/
+
         }
 
         .header-info {
@@ -105,9 +116,9 @@
             background-color: rgba(255, 255, 255, 0.2);
             width: 3.6cm;
         }
-        
+
         input[type="date"]::-webkit-calendar-picker-indicator {
-             display: none;
+            display: none;
         }
 
 
@@ -117,8 +128,7 @@
             justify-content: space-between;
             align-items: baseline;
             margin-bottom: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #1a1a1a;
+            padding-top: 10px;
         }
 
         .title-section h1 {
@@ -131,20 +141,22 @@
 
         .title-section .num {
             font-family: 'Roboto Mono', monospace;
-            font-size: 10pt;
+            font-size: 12pt;
             color: #555;
-            margin-top: 5px;
+            margin-bottom: 10px;
         }
 
         /* CLIENT/PROJECT SUMMARY */
         .summary {
             display: flex;
-            margin-bottom: 40px;
-            gap: 50px;
+            margin-bottom: 20px;
+            gap: 70px;
+            padding-bottom: 80px;
+            border-bottom: 1px solid #1a1a1a;
         }
 
         .summary-block {
-            line-height: 1.6;
+            line-height: 0.8;
         }
 
         .summary-block strong {
@@ -159,13 +171,19 @@
         }
 
         /* ITEMS TABLE */
+        .Lista {
+            margin-left: 180px;
+            margin-top: -50px;
+            height: 400px;
+        }
+
         .items-header {
             display: flex;
             justify-content: space-between;
             font-weight: bold;
-            border-bottom: 1px solid #1a1a1a;
             padding-bottom: 5px;
             margin-bottom: 10px;
+
         }
 
         .items-header .detail-col {
@@ -174,7 +192,7 @@
 
         .items-header .cost-col {
             width: 30%;
-            text-align: right;
+            text-align: center;
         }
 
         .item-group {
@@ -324,14 +342,14 @@
 
         /* FOOTER CONTACT */
         .contact {
-            margin-top: 60px;
+            margin-top: 10px;
             padding-top: 20px;
             border-top: 1px solid #1a1a1a;
             text-align: center;
-            font-size: 12pt;
+            font-size: 8pt;
             display: flex;
-            justify-content: center;
-            gap: 40px;
+            justify-content: right;
+            gap: 20px;
             border-collapse: collapse;
         }
 
@@ -417,15 +435,6 @@
             border-radius: 5px;
             padding: 0px 10px;
         }
-
-        .item-row sub {
-            display: block;
-        }
-
-        img {
-            height: 20pt;
-            display: initial; /* None para no mostrar*/
-        }
     </style>
 </head>
 
@@ -445,105 +454,117 @@
                 </div>
             </div>
         </div>
-
-        <div class="title-section">
-            <h1>PRESUPUESTO</h1>
-            <div class="num">— NUM. <span id="invoiceNumber">X</span></div>
-        </div>
-
-        <div class="summary">
-            <div class="summary-block client">
-                <strong>Cliente</strong>
-                <span contenteditable="false">Marcelo Gómez</span>
-            </div>
-            <div class="summary-block project">
-                <strong>Proyecto</strong>
-                <span contenteditable="false">Vectorización de imágenes</span>
-            </div>
-        </div>
-
-        <div class="items-list">
-            <div class="items-header">
-                <div class="detail-col">Detalle</div>
-                <div class="cost-col">Costo / Valor</div>
+        <div class="Contenido">
+            <div class="title-section">
+                <h1>PRESUPUESTO</h1>
+                <div class="num">— NUM. <span id="invoiceNumber">X</span></div>
             </div>
 
-            <div class="item-group">
-                <div class="item-row main">
-                    <div class="detail" contenteditable="false">Vectorización + Entrega de Originales</div>
-                    <div class="cost"></div>
+            <div class="summary">
+                <div class="summary-block client">
+                    <strong>Cliente</strong>
+                    <span contenteditable="false">Marcelo Gómez</span>
                 </div>
-                <ul id="items-ul" class="estilo-tiras">
-                    <li>
-                        <div class="item-row sub">
-                            <div class="detail" contenteditable="false">Vectorización x1 ("Death from above")</div>
-                            <button class="delete-item-btn" onclick="removeItem(this)">❌</button>
-                            <div class="cost" contenteditable="false" onblur="updateTotals()">$11.000</div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item-row sub">
-                            <div class="detail" contenteditable="false">Vectorización x3 (Emblemas Troopers)</div>
-                            <button class="delete-item-btn" onclick="removeItem(this)">❌</button>
-                            <div class="cost" contenteditable="false" onblur="updateTotals()">$25.000</div>
-                        </div>
-                    </li>
-                </ul>
+                <div class="summary-block project">
+                    <strong>Proyecto</strong>
+                    <span contenteditable="false">Vectorización de imágenes</span>
+                </div>
             </div>
-        </div>
-
-        <div class="controls" style="margin-top: -20px;">
-            <button id="addItemButton" onclick="addNewItem()" style="display:none;">➕ Agregar Item</button>
-        </div>
-        <div class="footer">
-
-            <div class="conditions-block">
-                <strong>Condiciones</strong>
-                <ol id="conditions-list">
-                    <li>Los archivos finales y/o originales no serán entregados hasta que el pago total sea abonado y
-                        confirmado mediante un comprobante.</li>
-                    <li>No se permitirá la reducción del tiempo del proyecto ni la entrega anticipada. Se respetará el
-                        plazo de entrega estipulado, salvo casos de fuerza mayor o ajenos a las gestiones.</li>
-                    <li>No se efectuarán cambios al proyecto y/o archivos luego de su entrega completa en el plazo
-                        estipulado. De necesitar modificaciones que no se encuentren dentro de los plazos
-                        correspondientes, se armará un nuevo presupuesto.</li>
-                </ol>
-            </div>
-
-            <div class="financial-block">
-                <div class="total-box">
-                    <div class="total-row">
-                        <span class="label">TOTAL: </span>
-                        <span class="amount" id="totalAmount">$0<span class="ars">ARS</span></span>
+            <div class="Lista">
+                <div class="items-list">
+                    <div class="items-header">
+                        <div class="detail-col">Detalle</div>
+                        <div class="cost-col">Costo / Valor</div>
                     </div>
-                    <div class="delivery-time">
-                        <div>Plazo estimado de entrega: <strong contenteditable="false" id="deliveryTime">1
-                                Semana</strong></div>
-                        <div>Seña del 50%: <strong class="amount" id="depositAmount">$0</strong><span
-                                class="ars2">ARS</span></div>
+
+                    <div class="item-group">
+                        <div class="item-row main">
+                            <div class="detail" contenteditable="false">Vectorización + Entrega de Originales</div>
+                            <div class="cost"></div>
+                        </div>
+                        <ul id="items-ul" class="estilo-tiras">
+                            <li>
+                                <div class="item-row sub">
+                                    <div class="detail" contenteditable="false">Vectorización x1 ("Death from above")
+                                    </div>
+                                    <button class="delete-item-btn" onclick="removeItem(this)">❌</button>
+                                    <div class="cost" contenteditable="false" onblur="updateTotals()">$11.000</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-row sub">
+                                    <div class="detail" contenteditable="false">Vectorización x3 (Emblemas Troopers)
+                                    </div>
+                                    <button class="delete-item-btn" onclick="removeItem(this)">❌</button>
+                                    <div class="cost" contenteditable="false" onblur="updateTotals()">$25.000</div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
+            </div>
+            <div class="controls" style="margin-top: -20px;">
+                <button id="addItemButton" onclick="addNewItem()" style="display:none;">➕ Agregar Item</button>
+            </div>
+            <div class="footer">
 
-                <div class="payment-methods">
-                    <strong>Métodos de Pago:</strong>
-                    <div><b>Alias:</b> matias.santoro.mp</div>
-                    <div><b>CBU:</b> 0140036603710355419484</div>
-                    <div><i><a href="mailto:msantoro85@hotmail.com">(Transferencia Bancaria)</i></></div>
+                <div class="conditions-block">
+                    <strong>Condiciones</strong>
+                    <ol id="conditions-list">
+                        <li>Los archivos finales y/o originales no serán entregados hasta que el pago total sea abonado
+                            y
+                            confirmado mediante un comprobante.</li>
+                        <li>No se permitirá la reducción del tiempo del proyecto ni la entrega anticipada. Se respetará
+                            el
+                            plazo de entrega estipulado, salvo casos de fuerza mayor o ajenos a las gestiones.</li>
+                        <li>No se efectuarán cambios al proyecto y/o archivos luego de su entrega completa en el plazo
+                            estipulado. De necesitar modificaciones que no se encuentren dentro de los plazos
+                            correspondientes, se armará un nuevo presupuesto.</li>
+                    </ol>
+                </div>
+
+                <div class="financial-block">
+                    <div class="total-box">
+                        <div class="total-row">
+                            <span class="label">TOTAL: </span>
+                            <span class="amount" id="totalAmount">$0<span class="ars">ARS</span></span>
+                        </div>
+                        <div class="delivery-time">
+                            <div>Plazo estimado de entrega: <strong contenteditable="false" id="deliveryTime">1
+                                    Semana</strong></div>
+                            <div>Seña del 50%: <strong class="amount" id="depositAmount">$0</strong><span
+                                    class="ars2">ARS</span></div>
+                        </div>
+                    </div>
+
+                    <div class="payment-methods">
+                        <strong>Métodos de Pago:</strong>
+                        <div><b>Alias:</b> matias.santoro.mp</div>
+                        <div><b>CBU:</b> 0140036603710355419484</div>
+                        <div><i><a href="mailto:msantoro85@hotmail.com">(Transferencia Bancaria)</i></>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact">
+                <div><a href="mailto:msantoro.dsg@gmail.com"><img
+                            src="./sobre.svg"
+                            alt="Correo Electrónico" class="Icono"> msantoro.dsg@gmail.com</a>
+                </div>
+                <span>|</span>
+                <div><a href="https://instagram.com/msantoro.dsg" target="_blank"><img
+                            src="./camara.svg" alt="Instagram"
+                            class="Icono"> @msantoro.dsg</a>
+                </div>
+                <span>|</span>
+                <div><a href="https://wa.me/+543487366401"><img
+                            src="./llamada-telefonica.svg" alt="WhatsApp"
+                            class="Icono"></a><a href="tel:+543487366401" alt="Teléfono">
+                        +54 (34873) 66401</a>
                 </div>
             </div>
         </div>
-
-        <div class="contact">      
-            <div><a href="https://instagram.com/msantoro.dsg" target="_blank"><img src="https://static.cdninstagram.com/rsrc.php/v4/yI/r/VsNE-OHk_8a.png" alt="Instagram" class="ocultar-al-imprimir-icono"> @msantoro.dsg</a>
-            </div>
-            <span>|</span>
-            <div><a href="mailto:msantoro.dsg@gmail.com"><img src="https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_default_1x_r5.png" alt="Correo Electrónico" class="ocultar-al-imprimir-icono"> msantoro.dsg@gmail.com</a>
-            </div>
-            <span>|</span>
-            <div><a href="https://wa.me/+543487366401"><img src="https://static.whatsapp.net/rsrc.php/v4/yP/r/rYZqPCBaG70.png" alt="WhatsApp" class="ocultar-al-imprimir-icono"></a><a href="tel:+543487366401" alt="Teléfono"> +54|3487|366401</a>
-            </div>
-        </div>
-
     </div>
 
     <script>
