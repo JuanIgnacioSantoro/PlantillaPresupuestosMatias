@@ -1,2 +1,2 @@
 # PlantillaPresupuestosMatias
-[Plantilla de presupuestos para Matías](https://juanignaciosantoro.github.io/PlantillaPresupuestosMatia)
+[Plantilla de presupuestos para Matías](https://juanignaciosantoro.github.io/PlantillaPresupuestosMatias)
