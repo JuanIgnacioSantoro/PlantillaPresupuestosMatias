@@ -4,16 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Presupuesto v1</title>
+    <title>Presupuesto v1.2</title>
     <style>
+        /* --- ESTILOS INICIALES DEL PRESUPUESTO (COPIADOS DE TU ARCHIVO) --- */
         @media print {
             .ocultar-al-imprimir-botones {
+                display: none;
+            }
+
+            .Icono {
                 display: none;
             }
         }
 
         .Icono {
-            height: 7pt;
+            display: none;
+        }
+
+        img {
+            height: 8pt;
             display: initial;
             /* None para no mostrar*/
         }
@@ -435,11 +444,87 @@
             border-radius: 5px;
             padding: 0px 10px;
         }
+
+        * {
+            /*color: red;*/
+        }
+
+        /* --- ESTILOS DEL FORMULARIO PREVIO --- */
+        .hidden {
+            display: none !important;
+        }
+
+        #formulario-previo {
+            width: 400px;
+            padding: 30px;
+            margin-top: 50px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #formulario-previo label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #formulario-previo input[type="date"],
+        #formulario-previo input[type="text"],
+        #formulario-previo input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        #generar-presupuesto-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 30px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        #generar-presupuesto-btn:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 
 <body>
-    <div class="invoice-container">
+    <div id="formulario-previo">
+        <h2>Creación Rápida de Presupuesto</h2>
+        <form id="datos-previos-form">
+            <div>
+                <label for="input-fecha">Fecha del Presupuesto:</label>
+                <input type="date" id="input-fecha" required>
+            </div>
+            <div>
+                <label for="input-cliente">Nombre del Cliente:</label>
+                <input type="text" id="input-cliente" placeholder="Ej: Juan Pérez" required>
+            </div>
+            <div>
+                <label for="input-proyecto">Descripción del Proyecto:</label>
+                <input type="text" id="input-proyecto" placeholder="Ej: Diseño de Logo" required>
+            </div>
+            <div>
+                <label for="input-numero">Número de Presupuesto:</label>
+                <input type="number" id="input-numero" placeholder="Ej: 001" value="1" required>
+            </div>
+            <button type="submit" id="generar-presupuesto-btn">📝 Generar Presupuesto</button>
+        </form>
+    </div>
+
+    <div class="invoice-container hidden" id="presupuesto-content">
         <div class="header" id="headerContent">
             <div class="logo"></div>
             <div class="header-info">
@@ -463,11 +548,11 @@
             <div class="summary">
                 <div class="summary-block client">
                     <strong>Cliente</strong>
-                    <span contenteditable="false">Marcelo Gómez</span>
+                    <span contenteditable="false" id="cliente-summary"></span>
                 </div>
                 <div class="summary-block project">
                     <strong>Proyecto</strong>
-                    <span contenteditable="false">Vectorización de imágenes</span>
+                    <span contenteditable="false" id="proyecto-summary"></span>
                 </div>
             </div>
             <div class="Lista">
@@ -568,31 +653,55 @@
     </div>
 
     <script>
-        // Set the default date (e.g., today's date) when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            const dateInput = document.getElementById('invoiceDate');
-            // Set the default value to a fixed date or today's date if empty
-            if (!dateInput.value) {
-                // Example: November 5, 2025 in YYYY-MM-DD format
-                dateInput.value = '2025-11-05';
-            }
-            // Set date input to readonly initially
-            dateInput.setAttribute('readonly', true);
-            updateTotals(); // Initial calculation on load
-        });
-
-        // Elements to make editable (updated to use new IDs and exclude the date input)
-        /* '#invoiceNumber, #companyName, #companyCuit, .summary span, .item-row .detail, .item-row .cost, #conditions-list, #deliveryTime, .payment-methods div:not(:first-child), .contact' */
+        // --- VARIABLES Y CONFIGURACIÓN INICIAL ---
         const editableElements = document.querySelectorAll(
             '#invoiceNumber, .summary span, .item-row .detail, .item-row .cost, #deliveryTime'
         );
-
         const editButton = document.getElementById('editButton');
         const addItemButton = document.getElementById('addItemButton');
-        const removeItemButton = document.getElementById('removeItemButton');
         const ul = document.getElementById('items-ul');
         const invoiceDateInput = document.getElementById('invoiceDate');
         let isEditing = false;
+        
+        // Elementos del nuevo formulario
+        const formPrevio = document.getElementById('datos-previos-form');
+        const contenedorFormulario = document.getElementById('formulario-previo');
+        const contenedorPresupuesto = document.getElementById('presupuesto-content');
+
+
+        // Set the default date (e.g., today's date) when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            // Se puede dejar el dateInput.value original si se quiere una fecha de ejemplo en el presupuesto,
+            // pero el formulario previo ahora establece la fecha.
+            // Establecer la fecha actual en el input del formulario previo
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('input-fecha').value = today;
+
+            invoiceDateInput.setAttribute('readonly', true);
+            updateTotals(); // Initial calculation on load
+        });
+
+        // --- MANEJO DEL FORMULARIO PREVIO ---
+        formPrevio.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // 1. Recoger datos
+            const fecha = document.getElementById('input-fecha').value;
+            const cliente = document.getElementById('input-cliente').value;
+            const proyecto = document.getElementById('input-proyecto').value;
+            const numero = document.getElementById('input-numero').value;
+
+            // 2. Poblar el Presupuesto
+            invoiceDateInput.value = fecha;
+            document.getElementById('cliente-summary').textContent = cliente;
+            document.getElementById('proyecto-summary').textContent = proyecto;
+            document.getElementById('invoiceNumber').textContent = numero.padStart(3, '0'); // Formatea el número a 3 dígitos
+
+            // 3. Ocultar el formulario y mostrar el presupuesto
+            contenedorFormulario.classList.add('hidden');
+            contenedorPresupuesto.classList.remove('hidden');
+        });
+
 
         /**
          * Toggles contentEditable attribute for all marked elements and shows/hides control buttons.
@@ -709,14 +818,16 @@
 
             costElements.forEach(costEl => {
                 // Extract number, remove non-digit/non-decimal characters (like $, space, comma)
-                const text = costEl.textContent.replace(/[$.]/g, ''); // Remove $ and dot thousands separators
-                const value = parseFloat(text.replace(',', '.')); // Replace comma with dot for float parsing
+                // Usamos el regex más estricto para limpiar el valor antes de parsear.
+                const text = costEl.textContent.replace(/[$.]/g, ''); // Quita $ y separador de miles '.'
+                const value = parseFloat(text.replace(',', '.')); // Reemplaza la coma por punto para el parseo decimal
 
                 if (!isNaN(value)) {
                     total += value;
                 }
-                // Ensure the cost field is formatted correctly (e.g., $ 11.000)
+                // Vuelve a formatear el costo en la celda si estamos editando
                 if (isEditing) {
+                    // Formato local español (Argentina usa '.' como separador de miles y ',' como decimal, pero el campo es ARS sin decimales)
                     costEl.textContent = `$ ${value.toLocaleString('es-AR', { minimumFractionDigits: 0 })}`;
                 }
             });
@@ -724,13 +835,18 @@
             // Calculate deposit
             const deposit = total * 0.50;
 
-            // Format numbers with thousands separator (e.g., in Spanish 'es-AR')
+            // Formato de números con separador de miles
             const totalFormatted = total.toLocaleString('es-AR', { minimumFractionDigits: 0 });
             const depositFormatted = deposit.toLocaleString('es-AR', { minimumFractionDigits: 0 });
 
             // Update DOM
             document.getElementById('totalAmount').innerHTML = `$${totalFormatted}<span class="ars">ARS</span>`;
             document.getElementById('depositAmount').textContent = `$${depositFormatted}`;
+        }
+
+        // Se hace visible la función print() para el botón de impresión
+        function print() {
+            window.print();
         }
     </script>
 </body>
