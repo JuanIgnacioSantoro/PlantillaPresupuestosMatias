@@ -4,36 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Presupuesto v1.2</title>
+    <title>Presupuesto v2.0</title>
     <style>
-        /* --- ESTILOS INICIALES DEL PRESUPUESTO (COPIADOS DE TU ARCHIVO) --- */
+        /* --- ESTILOS INICIALES DEL PRESUPUESTO --- */
         @media print {
             .ocultar-al-imprimir-botones {
                 display: none;
             }
 
-            .Icono {
-                display: none;
-            }
-        }
-
-        .Icono {
-            display: none;
         }
 
         img {
             height: 8pt;
             display: initial;
-            /* None para no mostrar*/
         }
 
         body {
-            /* Estilo general */
             font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f0f0f0;
-            /* Fondo fuera de la hoja */
             display: flex;
             justify-content: center;
         }
@@ -42,16 +32,10 @@
             /*background-image: url(./Base.jpg);*/
             background-color: #fff;
             background-size: contain;
-            /* Fondo de la hoja */
             width: 21cm;
-            /* width: 21cm; */
-            /* Ancho A4 */
             height: 29.7cm;
-            /* height: 29.7cm; */
-            /* Alto A4 */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             color: #000;
-            /* Color del Texto */
             padding: 0cm 0cm;
             box-sizing: border-box;
             line-height: 1.5;
@@ -66,28 +50,22 @@
 
         /* HEADER */
         .header {
-            /* Logo */
             display: flex;
             justify-content: space-between;
             margin-bottom: 40px;
             width: 100%;
             height: 4.2cm;
             background: url('banner.jpg') left/cover no-repeat;
-            /*Logo de fondo*/
-
         }
 
         .header-info {
-            /* Información de logo */
             text-align: right;
             line-height: 1.3;
             font-size: 10pt;
             font-family: 'Roboto Mono', monospace;
             font-weight: 700;
             color: #fff;
-            /* Color de texto sobre logo*/
             margin: auto 1cm;
-            /* Margen vertical y horizontal */
         }
 
         .header-info div:first-child {
@@ -95,7 +73,7 @@
             margin-bottom: 5px;
         }
 
-        /* NEW STYLES FOR DATE INPUT */
+        /* DATE INPUT */
         .date-input {
             border: none;
             background: none;
@@ -103,13 +81,9 @@
             font-family: 'Roboto Mono', monospace;
             font-weight: 700;
             color: #fff;
-            /* Color de texto sobre logo*/
             font-size: 12pt;
             outline: none;
             cursor: default;
-            /* Hide the default date picker icon until focus */
-            /* This is a tricky property across browsers, but helps for a cleaner look */
-            /* The input is set to be readonly when not in edit mode via JS */
             padding: 0;
             margin-right: 0cm;
             line-height: 1.3;
@@ -119,7 +93,6 @@
         }
 
         .date-input:focus {
-            /* Show a light border when focused and editable */
             border: 1px dashed #fff;
             padding: 1px;
             background-color: rgba(255, 255, 255, 0.2);
@@ -127,7 +100,7 @@
         }
 
         input[type="date"]::-webkit-calendar-picker-indicator {
-            display: none;
+            /*display: none;*/
         }
 
 
@@ -192,7 +165,6 @@
             font-weight: bold;
             padding-bottom: 5px;
             margin-bottom: 10px;
-
         }
 
         .items-header .detail-col {
@@ -219,11 +191,9 @@
         }
 
         .item-row.sub {
-
             font-size: 9pt;
             color: #555;
             display: flex;
-            /* Ensure item details and cost align */
             width: 100%;
         }
 
@@ -420,7 +390,6 @@
             line-height: 1;
             margin-left: 10px;
             visibility: hidden;
-            /* Hide by default */
         }
 
         /* Ensure .detail and .cost take up space */
@@ -445,10 +414,6 @@
             padding: 0px 10px;
         }
 
-        * {
-            /*color: red;*/
-        }
-
         /* --- ESTILOS DEL FORMULARIO PREVIO --- */
         .hidden {
             display: none !important;
@@ -469,9 +434,9 @@
             font-weight: bold;
             color: #333;
         }
-
-        #formulario-previo input[type="date"],
+        
         #formulario-previo input[type="text"],
+        #formulario-previo input[type="date"],
         #formulario-previo input[type="number"] {
             width: 100%;
             padding: 10px;
@@ -480,13 +445,16 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
+        
+        #item-inputs input {
+            margin-bottom: 10px;
+        }
 
+        #agregar-item-btn,
         #generar-presupuesto-btn {
             width: 100%;
             padding: 12px;
-            margin-top: 30px;
-            background-color: #007bff;
-            color: white;
+            margin-top: 15px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -494,8 +462,39 @@
             font-weight: bold;
         }
 
+        #agregar-item-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        #agregar-item-btn:hover {
+            background-color: #1e7e34;
+        }
+
+        #generar-presupuesto-btn {
+            background-color: #007bff;
+            color: white;
+        }
+
         #generar-presupuesto-btn:hover {
             background-color: #0056b3;
+        }
+        
+        #lista-items-agregados {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        #lista-items-agregados li {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            margin-bottom: 5px;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
@@ -520,6 +519,23 @@
                 <label for="input-numero">Número de Presupuesto:</label>
                 <input type="number" id="input-numero" placeholder="Ej: 001" value="1" required>
             </div>
+
+            <hr>
+
+            <h3>Añadir Ítems</h3>
+            <div id="item-inputs">
+                <label for="input-item-detail">Detalle del Item:</label>
+                <input type="text" id="input-item-detail" placeholder="Ej: Diseño de icono">
+                <label for="input-item-cost">Costo (ARS):</label>
+                <input type="number" id="input-item-cost" placeholder="Ej: 15000" min="0">
+                <button type="button" id="agregar-item-btn">➕ Agregar Item a la Lista</button>
+            </div>
+
+            <ul id="lista-items-agregados">
+                </ul>
+
+            <hr>
+
             <button type="submit" id="generar-presupuesto-btn">📝 Generar Presupuesto</button>
         </form>
     </div>
@@ -534,7 +550,7 @@
                 <div class="controls">
                     <button id="editButton" class="ocultar-al-imprimir-botones" onclick="toggleEdit()">📝 Editar
                         Contenido</button>
-                    <button id="printButton" class="ocultar-al-imprimir-botones" onclick="print()">🖨 Imprimir
+                    <button id="printButton" class="ocultar-al-imprimir-botones" onclick="window.print()">🖨 Imprimir
                         Contenido</button>
                 </div>
             </div>
@@ -564,27 +580,11 @@
 
                     <div class="item-group">
                         <div class="item-row main">
-                            <div class="detail" contenteditable="false">Vectorización + Entrega de Originales</div>
+                            <div class="detail" contenteditable="false">Detalles del Proyecto</div>
                             <div class="cost"></div>
                         </div>
                         <ul id="items-ul" class="estilo-tiras">
-                            <li>
-                                <div class="item-row sub">
-                                    <div class="detail" contenteditable="false">Vectorización x1 ("Death from above")
-                                    </div>
-                                    <button class="delete-item-btn" onclick="removeItem(this)">❌</button>
-                                    <div class="cost" contenteditable="false" onblur="updateTotals()">$11.000</div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="item-row sub">
-                                    <div class="detail" contenteditable="false">Vectorización x3 (Emblemas Troopers)
-                                    </div>
-                                    <button class="delete-item-btn" onclick="removeItem(this)">❌</button>
-                                    <div class="cost" contenteditable="false" onblur="updateTotals()">$25.000</div>
-                                </div>
-                            </li>
-                        </ul>
+                            </ul>
                     </div>
                 </div>
             </div>
@@ -668,22 +668,59 @@
         const contenedorFormulario = document.getElementById('formulario-previo');
         const contenedorPresupuesto = document.getElementById('presupuesto-content');
 
+        // Variables para la nueva funcionalidad de ítems en el formulario previo
+        const inputItemDetail = document.getElementById('input-item-detail');
+        const inputItemCost = document.getElementById('input-item-cost');
+        const agregarItemBtn = document.getElementById('agregar-item-btn');
+        const listaItemsAgregados = document.getElementById('lista-items-agregados');
+        
+        // Array para almacenar los ítems agregados antes de generar el presupuesto
+        const itemsAgregados = []; 
 
-        // Set the default date (e.g., today's date) when the page loads
+
         document.addEventListener('DOMContentLoaded', () => {
-            // Se puede dejar el dateInput.value original si se quiere una fecha de ejemplo en el presupuesto,
-            // pero el formulario previo ahora establece la fecha.
             // Establecer la fecha actual en el input del formulario previo
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('input-fecha').value = today;
 
             invoiceDateInput.setAttribute('readonly', true);
-            updateTotals(); // Initial calculation on load
+            updateTotals(); // Inicializa totales (debería dar $0 al inicio)
         });
 
-        // --- MANEJO DEL FORMULARIO PREVIO ---
+        // --- MANEJO DE AGREGAR ÍTEMS EN EL FORMULARIO PREVIO ---
+        agregarItemBtn.addEventListener('click', () => {
+            const detail = inputItemDetail.value.trim();
+            // Intenta parsear el costo a un número flotante
+            const cost = parseFloat(inputItemCost.value);
+
+            if (detail && !isNaN(cost) && cost >= 0) {
+                // Agregar al array interno
+                itemsAgregados.push({ detail, cost });
+
+                // Mostrar el ítem en la lista temporal
+                const li = document.createElement('li');
+                const costFormatted = cost.toLocaleString('es-AR', { minimumFractionDigits: 0 });
+                li.innerHTML = `<span>${detail}</span> - <strong>$${costFormatted}</strong>`;
+                listaItemsAgregados.appendChild(li);
+
+                // Limpiar inputs y enfocar
+                inputItemDetail.value = '';
+                inputItemCost.value = '';
+                inputItemDetail.focus();
+            } else {
+                alert('Por favor, ingresa un detalle válido y un costo numérico mayor o igual a cero.');
+            }
+        });
+
+
+        // --- MANEJO DEL SUBMIT DEL FORMULARIO PREVIO ---
         formPrevio.addEventListener('submit', (e) => {
             e.preventDefault();
+
+            if (itemsAgregados.length === 0) {
+                alert('Debes agregar al menos un item al presupuesto antes de generarlo.');
+                return;
+            }
 
             // 1. Recoger datos
             const fecha = document.getElementById('input-fecha').value;
@@ -697,9 +734,31 @@
             document.getElementById('proyecto-summary').textContent = proyecto;
             document.getElementById('invoiceNumber').textContent = numero.padStart(3, '0'); // Formatea el número a 3 dígitos
 
-            // 3. Ocultar el formulario y mostrar el presupuesto
+            // 3. Poblar la lista de Ítems
+            const itemsUl = document.getElementById('items-ul');
+            itemsUl.innerHTML = ''; // Limpiar cualquier contenido inicial
+
+            itemsAgregados.forEach(item => {
+                const newLi = document.createElement('li');
+                const costFormatted = item.cost.toLocaleString('es-AR', { minimumFractionDigits: 0 });
+                
+                newLi.innerHTML = `
+                    <div class="item-row sub">
+                        <div class="detail" contenteditable="false">${item.detail}</div>
+                        <button class="delete-item-btn" onclick="removeItem(this)">❌</button>
+                        <div class="cost" contenteditable="false" onblur="updateTotals()">$${costFormatted}</div>
+                    </div>
+                `;
+                itemsUl.appendChild(newLi);
+            });
+
+
+            // 4. Ocultar el formulario y mostrar el presupuesto
             contenedorFormulario.classList.add('hidden');
             contenedorPresupuesto.classList.remove('hidden');
+            
+            // 5. Recalcular totales con los nuevos ítems
+            updateTotals();
         });
 
 
@@ -724,20 +783,19 @@
             // Specific handling for the date input's readonly attribute
             if (isEditing) {
                 invoiceDateInput.removeAttribute('readonly');
-                // Optional: make the cursor visible for editing
                 invoiceDateInput.style.pointerEvents = 'auto';
 
                 editButton.textContent = '💾 Guardar Cambios';
-                editButton.style.backgroundColor = '#dc3545'; // Red for "Save"
-                addItemButton.style.display = 'inline-block'; // Show "Add Item" button
+                editButton.style.backgroundColor = '#dc3545';
+                addItemButton.style.display = 'inline-block';
 
             } else {
                 invoiceDateInput.setAttribute('readonly', true);
-                invoiceDateInput.style.pointerEvents = 'none'; // Prevents opening picker
+                invoiceDateInput.style.pointerEvents = 'none';
 
                 editButton.textContent = '📝 Editar Contenido';
-                editButton.style.backgroundColor = '#007bff'; // Blue for "Edit"
-                addItemButton.style.display = 'none'; // Hide "Add Item" button
+                editButton.style.backgroundColor = '#007bff';
+                addItemButton.style.display = 'none';
 
                 updateTotals(); // Recalculate totals after saving
             }
@@ -759,7 +817,7 @@
         }
 
         /**
-         * Agrega un nuevo elemento de lista al presupuesto.
+         * Agrega un nuevo elemento de lista al presupuesto (usado desde el botón en el presupuesto).
          */
         function addNewItem() {
             const newLi = document.createElement('li');
@@ -770,14 +828,12 @@
                     <div class="cost" contenteditable="true" onblur="finishEditing(this)">$ 0</div>
                 </div>
             `;
-            // Asegúrate de que los nuevos ítems sean editables si ya estás en modo de edición
             if (isEditing) {
                 newLi.querySelectorAll('.delete-item-btn').forEach(btn => btn.style.visibility = 'visible');
             }
             ul.appendChild(newLi);
-            // Enfoca en el nuevo detalle para edición inmediata
             newLi.querySelector('.detail').focus();
-            updateTotals(); // Actualiza totales
+            updateTotals();
         }
 
         /**
@@ -785,7 +841,6 @@
          * @param {HTMLElement} button - The clicked delete button element.
          */
         function removeItem(button) {
-            // Traverse up to find the closest <li> (the item container)
             const li = button.closest('li');
             if (li) {
                 ul.removeChild(li);
@@ -798,12 +853,9 @@
         * @param {HTMLElement} element - El elemento que se acaba de editar (detail o cost).
         */
         function finishEditing(element) {
-            // Verifica si el modo de edición no está activo
-            // Si el modo de edición está activo, no quitamos el borde punteado para permitir la edición continua
             if (!isEditing) {
                 element.setAttribute('contenteditable', 'false');
             }
-            // Si el elemento es un costo, llama a updateTotals
             if (element.classList.contains('cost')) {
                 updateTotals();
             }
@@ -818,16 +870,15 @@
 
             costElements.forEach(costEl => {
                 // Extract number, remove non-digit/non-decimal characters (like $, space, comma)
-                // Usamos el regex más estricto para limpiar el valor antes de parsear.
-                const text = costEl.textContent.replace(/[$.]/g, ''); // Quita $ y separador de miles '.'
-                const value = parseFloat(text.replace(',', '.')); // Reemplaza la coma por punto para el parseo decimal
+                const text = costEl.textContent.replace(/[$.]/g, '');
+                const value = parseFloat(text.replace(',', '.')); 
 
                 if (!isNaN(value)) {
                     total += value;
                 }
+                
                 // Vuelve a formatear el costo en la celda si estamos editando
                 if (isEditing) {
-                    // Formato local español (Argentina usa '.' como separador de miles y ',' como decimal, pero el campo es ARS sin decimales)
                     costEl.textContent = `$ ${value.toLocaleString('es-AR', { minimumFractionDigits: 0 })}`;
                 }
             });
@@ -842,11 +893,6 @@
             // Update DOM
             document.getElementById('totalAmount').innerHTML = `$${totalFormatted}<span class="ars">ARS</span>`;
             document.getElementById('depositAmount').textContent = `$${depositFormatted}`;
-        }
-
-        // Se hace visible la función print() para el botón de impresión
-        function print() {
-            window.print();
         }
     </script>
 </body>
