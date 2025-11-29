@@ -4,14 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Presupuesto v2.0</title>
+    <title>Presupuesto v2.1</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         /* --- ESTILOS INICIALES DEL PRESUPUESTO --- */
         @media print {
             .ocultar-al-imprimir-botones {
-                display: none;
+                display: none !important;
             }
 
+            .Icono {
+                display: none !important;
+            }
+        }
+
+        .Icono {
+            display: none;
         }
 
         img {
@@ -55,7 +63,7 @@
             margin-bottom: 40px;
             width: 100%;
             height: 4.2cm;
-            background: url('/Banner.jpg') left/cover no-repeat;
+            background: url('banner.jpg') left/cover no-repeat;
         }
 
         .header-info {
@@ -99,9 +107,12 @@
             width: 3.6cm;
         }
 
+        /* ESTA REGLA DEBE ELIMINARSE O COMENTARSE PARA QUE EL DATE PICKER FUNCIONE EN EL FORMULARIO PREVIO */
+        /*
         input[type="date"]::-webkit-calendar-picker-indicator {
-            /*display: none;*/
+            display: none;
         }
+        */
 
 
         /* TITLE SECTION */
@@ -351,7 +362,7 @@
         }
 
         .controls {
-            margin-top: 5px;
+            margin-top: 0px;
             margin-right: 0px;
             text-align: center;
         }
@@ -363,6 +374,7 @@
             cursor: pointer;
             font-weight: bold;
             border-radius: 5px;
+            transition: background-color 0.2s;
         }
 
         #editButton {
@@ -373,6 +385,17 @@
         #addItemButton {
             background-color: #28a745;
             color: white;
+        }
+
+        /* ESTILOS DE BOTONES DE EXPORTACIÓN */
+        #exportPdfButton {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        #exportJpgButton {
+            background-color: #ffc107;
+            color: #333;
         }
 
         #printButton {
@@ -434,7 +457,7 @@
             font-weight: bold;
             color: #333;
         }
-        
+
         #formulario-previo input[type="text"],
         #formulario-previo input[type="date"],
         #formulario-previo input[type="number"] {
@@ -445,7 +468,7 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
-        
+
         #item-inputs input {
             margin-bottom: 10px;
         }
@@ -479,7 +502,7 @@
         #generar-presupuesto-btn:hover {
             background-color: #0056b3;
         }
-        
+
         #lista-items-agregados {
             list-style-type: none;
             padding: 0;
@@ -532,7 +555,7 @@
             </div>
 
             <ul id="lista-items-agregados">
-                </ul>
+            </ul>
 
             <hr>
 
@@ -547,15 +570,16 @@
                 <input type="date" id="invoiceDate" class="date-input">
                 <div id="companyName">Matías A. Santoro</div>
                 <div id="companyCuit">20-40493208-0</div>
-                <div class="controls">
-                    <button id="editButton" class="ocultar-al-imprimir-botones" onclick="toggleEdit()">📝 Editar
-                        Contenido</button>
-                    <button id="printButton" class="ocultar-al-imprimir-botones" onclick="window.print()">🖨 Imprimir
-                        Contenido</button>
-                </div>
+
             </div>
         </div>
         <div class="Contenido">
+            <div class="controls ocultar-al-imprimir-botones">
+                <button id="editButton" onclick="toggleEdit()">📝 Editar Contenido</button>
+                <button id="exportPdfButton" onclick="exportAsPdf()">📄 Exportar PDF</button>
+                <button id="exportJpgButton" onclick="exportAsImage()">🖼️ Exportar JPG</button>
+                <button id="printButton" onclick="print()">🖨 Imprimir Contenido</button>
+            </div>
             <div class="title-section">
                 <h1>PRESUPUESTO</h1>
                 <div class="num">— NUM. <span id="invoiceNumber">X</span></div>
@@ -584,11 +608,11 @@
                             <div class="cost"></div>
                         </div>
                         <ul id="items-ul" class="estilo-tiras">
-                            </ul>
+                        </ul>
                     </div>
                 </div>
             </div>
-            <div class="controls" style="margin-top: -20px;">
+            <div class="controls ocultar-al-imprimir-botones" style="margin-top: -20px;">
                 <button id="addItemButton" onclick="addNewItem()" style="display:none;">➕ Agregar Item</button>
             </div>
             <div class="footer">
@@ -633,18 +657,15 @@
             </div>
 
             <div class="contact">
-                <div><a href="mailto:msantoro.dsg@gmail.com"><img
-                            src="./sobre.svg"
-                            alt="Correo Electrónico" class="Icono"> msantoro.dsg@gmail.com</a>
+                <div><a href="mailto:msantoro.dsg@gmail.com"><img src="./sobre.svg" alt="Correo Electrónico"
+                            class="Icono"> msantoro.dsg@gmail.com</a>
                 </div>
                 <span>|</span>
-                <div><a href="https://instagram.com/msantoro.dsg" target="_blank"><img
-                            src="./camara.svg" alt="Instagram"
-                            class="Icono"> @msantoro.dsg</a>
+                <div><a href="https://instagram.com/msantoro.dsg" target="_blank"><img src="./camara.svg"
+                            alt="Instagram" class="Icono"> @msantoro.dsg</a>
                 </div>
                 <span>|</span>
-                <div><a href="https://wa.me/+543487366401"><img
-                            src="./llamada-telefonica.svg" alt="WhatsApp"
+                <div><a href="https://wa.me/+543487366401"><img src="./llamada-telefonica.svg" alt="WhatsApp"
                             class="Icono"></a><a href="tel:+543487366401" alt="Teléfono">
                         +54 (34873) 66401</a>
                 </div>
@@ -662,7 +683,7 @@
         const ul = document.getElementById('items-ul');
         const invoiceDateInput = document.getElementById('invoiceDate');
         let isEditing = false;
-        
+
         // Elementos del nuevo formulario
         const formPrevio = document.getElementById('datos-previos-form');
         const contenedorFormulario = document.getElementById('formulario-previo');
@@ -673,24 +694,22 @@
         const inputItemCost = document.getElementById('input-item-cost');
         const agregarItemBtn = document.getElementById('agregar-item-btn');
         const listaItemsAgregados = document.getElementById('lista-items-agregados');
-        
+
         // Array para almacenar los ítems agregados antes de generar el presupuesto
-        const itemsAgregados = []; 
+        const itemsAgregados = [];
 
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Establecer la fecha actual en el input del formulario previo
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('input-fecha').value = today;
 
             invoiceDateInput.setAttribute('readonly', true);
-            updateTotals(); // Inicializa totales (debería dar $0 al inicio)
+            updateTotals();
         });
 
         // --- MANEJO DE AGREGAR ÍTEMS EN EL FORMULARIO PREVIO ---
         agregarItemBtn.addEventListener('click', () => {
             const detail = inputItemDetail.value.trim();
-            // Intenta parsear el costo a un número flotante
             const cost = parseFloat(inputItemCost.value);
 
             if (detail && !isNaN(cost) && cost >= 0) {
@@ -699,6 +718,7 @@
 
                 // Mostrar el ítem en la lista temporal
                 const li = document.createElement('li');
+                // Formatear el costo para la previsualización
                 const costFormatted = cost.toLocaleString('es-AR', { minimumFractionDigits: 0 });
                 li.innerHTML = `<span>${detail}</span> - <strong>$${costFormatted}</strong>`;
                 listaItemsAgregados.appendChild(li);
@@ -732,16 +752,16 @@
             invoiceDateInput.value = fecha;
             document.getElementById('cliente-summary').textContent = cliente;
             document.getElementById('proyecto-summary').textContent = proyecto;
-            document.getElementById('invoiceNumber').textContent = numero.padStart(3, '0'); // Formatea el número a 3 dígitos
+            document.getElementById('invoiceNumber').textContent = numero.padStart(3, '0');
 
             // 3. Poblar la lista de Ítems
             const itemsUl = document.getElementById('items-ul');
-            itemsUl.innerHTML = ''; // Limpiar cualquier contenido inicial
+            itemsUl.innerHTML = '';
 
             itemsAgregados.forEach(item => {
                 const newLi = document.createElement('li');
                 const costFormatted = item.cost.toLocaleString('es-AR', { minimumFractionDigits: 0 });
-                
+
                 newLi.innerHTML = `
                     <div class="item-row sub">
                         <div class="detail" contenteditable="false">${item.detail}</div>
@@ -756,7 +776,7 @@
             // 4. Ocultar el formulario y mostrar el presupuesto
             contenedorFormulario.classList.add('hidden');
             contenedorPresupuesto.classList.remove('hidden');
-            
+
             // 5. Recalcular totales con los nuevos ítems
             updateTotals();
         });
@@ -769,9 +789,7 @@
             isEditing = !isEditing;
 
             editableElements.forEach(el => {
-                // The item-row .detail and .cost cells are handled separately when adding a new item
                 if (el.classList.contains('detail') || el.classList.contains('cost')) {
-                    // Only sub-item details and costs should be toggled
                     if (el.closest('.item-row') && el.closest('.item-row').classList.contains('sub')) {
                         el.contentEditable = isEditing;
                     }
@@ -780,7 +798,6 @@
                 }
             });
 
-            // Specific handling for the date input's readonly attribute
             if (isEditing) {
                 invoiceDateInput.removeAttribute('readonly');
                 invoiceDateInput.style.pointerEvents = 'auto';
@@ -797,23 +814,17 @@
                 editButton.style.backgroundColor = '#007bff';
                 addItemButton.style.display = 'none';
 
-                updateTotals(); // Recalculate totals after saving
+                updateTotals();
             }
 
-            // Toggle item delete buttons visibility
             document.querySelectorAll('.delete-item-btn').forEach(btn => {
                 btn.style.visibility = isEditing ? 'visible' : 'hidden';
             });
 
-            // Selecciona todos los elementos que tengan el atributo contenteditable
             let elements = document.querySelectorAll('[contenteditable]');
-
-            // Itera sobre cada elemento seleccionado
             elements.forEach(function (element) {
-                // Establece el valor del atributo contenteditable a 'false'
                 element.setAttribute('contenteditable', isEditing ? 'true' : 'false');
             });
-
         }
 
         /**
@@ -838,19 +849,17 @@
 
         /**
          * Removes a specific item when its individual delete button is clicked.
-         * @param {HTMLElement} button - The clicked delete button element.
          */
         function removeItem(button) {
             const li = button.closest('li');
             if (li) {
                 ul.removeChild(li);
-                updateTotals(); // Recalculate totals after removal
+                updateTotals();
             }
         }
 
         /**
         * Termina la edición de un elemento, eliminando el atributo contenteditable.
-        * @param {HTMLElement} element - El elemento que se acaba de editar (detail o cost).
         */
         function finishEditing(element) {
             if (!isEditing) {
@@ -869,30 +878,77 @@
             let total = 0;
 
             costElements.forEach(costEl => {
-                // Extract number, remove non-digit/non-decimal characters (like $, space, comma)
                 const text = costEl.textContent.replace(/[$.]/g, '');
-                const value = parseFloat(text.replace(',', '.')); 
+                const value = parseFloat(text.replace(',', '.'));
 
                 if (!isNaN(value)) {
                     total += value;
                 }
-                
-                // Vuelve a formatear el costo en la celda si estamos editando
+
                 if (isEditing) {
                     costEl.textContent = `$ ${value.toLocaleString('es-AR', { minimumFractionDigits: 0 })}`;
                 }
             });
 
-            // Calculate deposit
             const deposit = total * 0.50;
 
-            // Formato de números con separador de miles
             const totalFormatted = total.toLocaleString('es-AR', { minimumFractionDigits: 0 });
             const depositFormatted = deposit.toLocaleString('es-AR', { minimumFractionDigits: 0 });
 
-            // Update DOM
             document.getElementById('totalAmount').innerHTML = `$${totalFormatted}<span class="ars">ARS</span>`;
             document.getElementById('depositAmount').textContent = `$${depositFormatted}`;
+        }
+
+        // --- FUNCIONES DE EXPORTACIÓN ---
+
+        /**
+         * Exporta el contenido del presupuesto como una imagen JPG utilizando html2canvas.
+         */
+        function exportAsImage() {
+            const input = document.getElementById('presupuesto-content');
+
+            // Ocultar temporalmente los controles que no deben aparecer en la imagen
+            //const controls = document.querySelector('.header-info .controls');
+            //controls.classList.add("hidden");
+
+            // Revertir el estado de edición antes de capturar (para ocultar los bordes punteados)
+            const wasEditing = isEditing;
+            if (wasEditing) {
+                toggleEdit(); // Desactiva la edición si está activa
+            }
+
+            // Usar html2canvas para renderizar el DIV en un canvas
+            html2canvas(input, {
+                scale: 3, // Aumenta la escala para una mejor resolución (mayor calidad)
+                useCORS: true, // Importante para imágenes externas
+                allowTaint: true // Puede ser necesario para imágenes locales
+            }).then(function (canvas) {
+                // Convertir el canvas a una URL de datos (JPG con calidad 0.9)
+                const imgData = canvas.toDataURL("image/jpeg", 0.9);
+
+                // Crear un enlace temporal para forzar la descarga
+                const link = document.createElement('a');
+                // Asignar un nombre de archivo dinámico
+                link.download = 'presupuesto_' + document.getElementById('cliente-summary').textContent.trim().replace(/\s/g, '_') + '.jpg';
+                link.href = imgData;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                // Volver a mostrar los controles y restaurar el modo de edición
+                controls.classList.remove('hidden');
+                if (wasEditing) {
+                    toggleEdit(); // Reactiva la edición si estaba activa
+                }
+            });
+        }
+
+        /**
+         * Genera un PDF utilizando la función nativa de impresión del navegador.
+         * El usuario deberá seleccionar "Guardar como PDF" en el cuadro de diálogo.
+         */
+        function exportAsPdf() {
+            window.print();
         }
     </script>
 </body>
