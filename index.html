@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Presupuesto v2.1</title>
+    <title>Presupuesto v2.2</title>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <style>
         /* --- ESTILOS INICIALES DEL PRESUPUESTO --- */
@@ -16,10 +16,6 @@
             .Icono {
                 display: none !important;
             }
-        }
-
-        .Icono {
-            display: none;
         }
 
         img {
@@ -362,7 +358,7 @@
         }
 
         .controls {
-            margin-top: 0px;
+            margin-top: 5px;
             margin-right: 0px;
             text-align: center;
         }
@@ -570,7 +566,6 @@
                 <input type="date" id="invoiceDate" class="date-input">
                 <div id="companyName">Matías A. Santoro</div>
                 <div id="companyCuit">20-40493208-0</div>
-
             </div>
         </div>
         <div class="Contenido">
@@ -578,7 +573,7 @@
                 <button id="editButton" onclick="toggleEdit()">📝 Editar Contenido</button>
                 <button id="exportPdfButton" onclick="exportAsPdf()">📄 Exportar PDF</button>
                 <button id="exportJpgButton" onclick="exportAsImage()">🖼️ Exportar JPG</button>
-                <button id="printButton" onclick="print()">🖨 Imprimir Contenido</button>
+                <button id="printButton" onclick="Imprimir()">🖨 Imprimir Contenido</button>
             </div>
             <div class="title-section">
                 <h1>PRESUPUESTO</h1>
@@ -908,8 +903,8 @@
             const input = document.getElementById('presupuesto-content');
 
             // Ocultar temporalmente los controles que no deben aparecer en la imagen
-            //const controls = document.querySelector('.header-info .controls');
-            //controls.classList.add("hidden");
+            const controls = document.querySelector('.controls');
+            controls.classList.add('hidden');
 
             // Revertir el estado de edición antes de capturar (para ocultar los bordes punteados)
             const wasEditing = isEditing;
@@ -924,7 +919,7 @@
                 allowTaint: true // Puede ser necesario para imágenes locales
             }).then(function (canvas) {
                 // Convertir el canvas a una URL de datos (JPG con calidad 0.9)
-                const imgData = canvas.toDataURL("image/jpeg", 0.9);
+                const imgData = canvas.toDataURL('image/jpg', 0.9);
 
                 // Crear un enlace temporal para forzar la descarga
                 const link = document.createElement('a');
@@ -948,6 +943,10 @@
          * El usuario deberá seleccionar "Guardar como PDF" en el cuadro de diálogo.
          */
         function exportAsPdf() {
+            window.print();
+        }
+
+        function Imprimir() {
             window.print();
         }
     </script>
