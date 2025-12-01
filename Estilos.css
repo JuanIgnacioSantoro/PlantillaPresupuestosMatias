@@ -1,0 +1,508 @@
+/* --- ESTILOS INICIALES DEL PRESUPUESTO --- */
+@media print {
+    .ocultar-al-imprimir-botones {
+        display: none !important;
+    }
+
+    .Icono {
+        display: none !important;
+    }
+}
+
+img {
+    height: 8pt;
+    display: initial;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+}
+
+.invoice-container {
+    /*background-image: url(./Base.jpg);*/
+    background-color: #fff;
+    background-size: contain;
+    width: 21cm;
+    height: 29.7cm;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: #000;
+    padding: 0cm 0cm;
+    box-sizing: border-box;
+    line-height: 1.5;
+    font-size: 10pt;
+    display: flex;
+    flex-direction: column;
+}
+
+.Contenido {
+    margin: 0 1.3cm;
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    width: 100%;
+    height: 4.2cm;
+    background: url('./Banners/Banner_Original.jpg') left/cover no-repeat;
+}
+
+.header-info {
+    text-align: right;
+    line-height: 1.3;
+    font-size: 10pt;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 700;
+    color: #fff;
+    margin: auto 1cm;
+}
+
+.header-info div:first-child {
+    font-size: 10pt;
+    margin-bottom: 5px;
+}
+
+/* DATE INPUT */
+.date-input {
+    border: none;
+    background: none;
+    text-align: right;
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 700;
+    color: #fff;
+    font-size: 12pt;
+    outline: none;
+    cursor: default;
+    padding: 0;
+    margin-right: 0cm;
+    line-height: 1.3;
+    height: 19pt;
+    width: 3.5cm;
+    box-sizing: border-box;
+}
+
+.date-input:focus {
+    border: 1px dashed #fff;
+    padding: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+    width: 3.6cm;
+}
+
+/* ESTA REGLA DEBE ELIMINARSE O COMENTARSE PARA QUE EL DATE PICKER FUNCIONE EN EL FORMULARIO PREVIO */
+/*
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+*/
+
+
+/* TITLE SECTION */
+.title-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 30px;
+    padding-top: 10px;
+}
+
+.title-section h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 32pt;
+    font-weight: 500;
+    margin: 0;
+    letter-spacing: 2px;
+}
+
+.title-section .num {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 12pt;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* CLIENT/PROJECT SUMMARY */
+.summary {
+    display: flex;
+    margin-bottom: 20px;
+    gap: 70px;
+    padding-bottom: 80px;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+.summary-block {
+    line-height: 0.8;
+}
+
+.summary-block strong {
+    font-weight: bold;
+    font-size: 12pt;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.summary-block span {
+    color: #555;
+}
+
+/* ITEMS TABLE */
+.Lista {
+    margin-left: 180px;
+    margin-top: -50px;
+    height: 400px;
+}
+
+.items-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.items-header .detail-col {
+    width: 60%;
+}
+
+.items-header .cost-col {
+    width: 30%;
+    text-align: center;
+}
+
+.item-group {
+    margin-bottom: 20px;
+}
+
+.item-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+
+.item-row.main {
+    font-weight: bold;
+}
+
+.item-row.sub {
+    font-size: 9pt;
+    color: #555;
+    display: flex;
+    width: 100%;
+}
+
+.item-row .detail {
+    width: 50%;
+}
+
+.item-row .cost {
+    width: 20%;
+    text-align: right;
+}
+
+/* CONDITIONS, TOTAL, PAYMENT */
+.footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.conditions-block {
+    width: 50%;
+    font-size: 8pt;
+    line-height: 1.4;
+    color: #333;
+}
+
+.conditions-block strong {
+    display: block;
+    font-size: 10pt;
+    margin-bottom: 10px;
+    color: #1a1a1a;
+}
+
+.conditions-block ol {
+    padding-left: 15px;
+    margin: 0;
+}
+
+.conditions-block li {
+    margin-bottom: 10px;
+}
+
+.financial-block {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.total-box {
+    text-align: center;
+}
+
+.total-row {
+    border-top: 1px solid #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    margin-bottom: 10px;
+}
+
+.total-row .label {
+    font-size: 14pt;
+    font-weight: bold;
+    margin-right: 15px;
+    letter-spacing: 1px;
+}
+
+.total-row .amount {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 20pt;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+.delivery-time .amount {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 15pt;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+
+.ars {
+    font-size: 10pt;
+    font-weight: normal;
+    vertical-align: top;
+    margin-left: 5px;
+    color: #555;
+}
+
+.ars2 {
+    font-size: 7pt;
+    font-weight: normal;
+    vertical-align: top;
+    margin-left: 5px;
+    color: #555;
+}
+
+.delivery-time {
+    text-align: center;
+    font-size: 10pt;
+    margin-top: -10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.delivery-time strong {
+    font-weight: bold;
+}
+
+.payment-methods {
+    font-size: 9pt;
+    line-height: 1.6;
+    text-align: center;
+
+}
+
+.payment-methods strong {
+    font-weight: bold;
+    display: block;
+    font-size: 10pt;
+    margin-bottom: 5px;
+}
+
+/* FOOTER CONTACT */
+.contact {
+    margin-top: 10px;
+    padding-top: 20px;
+    border-top: 1px solid #1a1a1a;
+    text-align: center;
+    font-size: 8pt;
+    display: flex;
+    justify-content: right;
+    gap: 20px;
+    border-collapse: collapse;
+}
+
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+ul {
+    list-style: '> ';
+    padding-left: 15px;
+    margin: 0;
+}
+
+/* Added for editing visualization */
+[contenteditable="true"] {
+    border: 1px dashed #ccc;
+    padding: 2px;
+    outline: none;
+}
+
+.controls {
+    margin-top: 5px;
+    margin-right: 0px;
+    text-align: center;
+}
+
+.controls button {
+    padding: 8px 15px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+
+#editButton {
+    background-color: #007bff;
+    color: white;
+}
+
+#addItemButton {
+    background-color: #28a745;
+    color: white;
+}
+
+/* ESTILOS DE BOTONES DE EXPORTACIÓN */
+#exportPdfButton {
+    background-color: #dc3545;
+    color: white;
+}
+
+#exportJpgButton {
+    background-color: #ffc107;
+    color: #333;
+}
+
+#printButton {
+    background-color: #696969;
+    color: white;
+}
+
+.delete-item-btn {
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 12pt;
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 1;
+    margin-left: 10px;
+    visibility: hidden;
+}
+
+/* Ensure .detail and .cost take up space */
+.item-row.sub .detail {
+    flex-grow: 1;
+    min-width: 50%;
+}
+
+.item-row.sub .cost {
+    width: 50px;
+}
+
+#items-ul li:nth-child(odd) {
+    background-color: #eee;
+    border-radius: 5px;
+    padding: 0px 10px;
+}
+
+#items-ul li:nth-child(even) {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 0px 10px;
+}
+
+/* --- ESTILOS DEL FORMULARIO PREVIO --- */
+.hidden {
+    display: none !important;
+}
+
+#formulario-previo {
+    width: 400px;
+    padding: 30px;
+    margin-top: 50px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#formulario-previo label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #333;
+}
+
+#formulario-previo input[type="text"],
+#formulario-previo input[type="date"],
+#formulario-previo input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#item-inputs input {
+    margin-bottom: 10px;
+}
+
+#agregar-item-btn,
+#generar-presupuesto-btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#agregar-item-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+#agregar-item-btn:hover {
+    background-color: #1e7e34;
+}
+
+#generar-presupuesto-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+#generar-presupuesto-btn:hover {
+    background-color: #0056b3;
+}
+
+#lista-items-agregados {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 15px;
+}
+
+#lista-items-agregados li {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    margin-bottom: 5px;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+}
