@@ -23,6 +23,10 @@ body {
     justify-content: center;
 }
 
+.capture-mode {
+  position: absolute !important;
+}
+
 .invoice-container {
     /*background-image: url(./Base.jpg);*/
     background-color: #fff;
@@ -348,20 +352,31 @@ ul {
     outline: none;
 }
 
+.recuadro {
+    background-color: rgb(255, 255, 255);
+    height: 27px;
+    width: 695.44px;
+}
+
 .controls {
-    margin-top: 5px;
+    margin-top: 0px;
     margin-right: 0px;
     text-align: center;
 }
 
 .controls button {
-    padding: 8px 15px;
-    margin: 5px;
+    padding: 5px 15px;
+    margin: 0px;
     border: none;
     cursor: pointer;
     font-weight: bold;
     border-radius: 5px;
     transition: background-color 0.2s;
+}
+
+.oculto {
+    display: none;
+    margin: 10px;
 }
 
 #editButton {

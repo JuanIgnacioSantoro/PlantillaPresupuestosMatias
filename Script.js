@@ -231,9 +231,13 @@ function updateTotals() {
 function exportAsImage() {
     const input = document.getElementById('presupuesto-content');
 
+    input.classList.add("capture-mode");
+
     // Ocultar temporalmente los controles que no deben aparecer en la imagen
     const controls = document.querySelector('.controls');
-    controls.classList.add('hidden');
+    controls.classList.add('oculto');
+    const recuadro = document.querySelector('.recuadro');
+    recuadro.classList.remove('oculto');
 
     // Revertir el estado de edición antes de capturar (para ocultar los bordes punteados)
     const wasEditing = isEditing;
@@ -260,7 +264,8 @@ function exportAsImage() {
         document.body.removeChild(link);
 
         // Volver a mostrar los controles y restaurar el modo de edición
-        controls.classList.remove('hidden');
+        controls.classList.remove('oculto');
+        recuadro.classList.add('oculto');
         if (wasEditing) {
             toggleEdit(); // Reactiva la edición si estaba activa
         }
